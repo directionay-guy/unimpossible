@@ -1030,7 +1030,7 @@
     else if (S.hasLost) line = `DNF ${scoreEmoji}\nHints: ${S.hintsUsed}/5 ${hintsEmoji}`;
     else if (!gameStarted()) line = `not started yet`;   // don't show a phantom 100/100
     else line = `in progress — ${S.score}/100 so far\nHints: ${S.hintsUsed}/5 ${hintsEmoji}`;
-    return `Unimpossible #${S.puzzleNumber}${badge}\n${line}\n\nunimpossible.game #WW2W`;
+    return `Unimpossible #${S.puzzleNumber}${badge}\n${line}\n\nunimpossiblegame.com #WW2W`;
   }
 
   function shareResult() {
