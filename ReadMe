@@ -1,0 +1,49 @@
+UNIMPOSSIBLE — file structure
+
+  index.html            (root — open/serve this)
+  manifest.json         (root — PWA app metadata)
+  sw.js                 (root — service worker; MUST stay at root, see below)
+  readme.txt            (this file)
+
+  game/
+    game.js             the engine
+    styles.css          all styling
+    words.json          the word list (3,703 words)
+    dev.js              optional dev panel — DELETE for production
+
+  images/
+    icon-180.png        iOS home-screen icon
+    icon-192.png        PWA icon
+    icon-512.png        PWA icon / splash
+    favicon-32.png      browser tab
+    icon-unimpossible.svg   master artwork (keep for future edits)
+    email-designasaur.png   contact image shown in the About modal
+
+
+PATHS
+  All paths are relative to index.html.
+  game.js fetches the word list as 'game/words.json'.
+  The About modal loads 'images/email-designasaur.png'.
+
+  sw.js MUST stay at the site root. A service worker can only control pages at
+  or below its own folder, so it could not cache index.html from a subfolder.
+
+
+RUNNING IT
+  Serve over http/https — NOT file:// — because the page fetches words.json.
+  Locally:  python3 -m http.server     then open http://localhost:8000
+  Service workers also require https (or localhost), so the PWA features only
+  activate on a real host or localhost.
+
+
+INSTALLING AS AN APP
+  iOS:      Safari > Share > Add to Home Screen
+  Android:  Chrome > menu > Install app / Add to Home Screen
+  Desktop:  Chrome/Edge show an install icon in the address bar
+  Launches fullscreen with the Unimpossible icon, and plays offline.
+
+
+PRODUCTION CLEANUP
+  - delete game/dev.js
+  - remove the dev-panel markup and <script src="game/dev.js"> from index.html
+  - bump CACHE = 'unimpossible-v1' in sw.js when deploying big changes

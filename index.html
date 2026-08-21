@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unimpossible — Daily Word Puzzle</title>
+<meta name="description" content="Probably the hardest word puzzle in the whole wide world. A daily word puzzle by JTPgaming.">
+
+<!-- PWA / installable web app -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#16141F">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+
+<!-- iOS ignores the manifest for home-screen behaviour and needs its own tags -->
+<link rel="apple-touch-icon" href="images/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Unimpossible">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="game/styles.css">
+</head>
+<body>
+
+  <!-- header -->
+  <h1 class="wordmark"><span class="c">unim</span><span class="bone">possible</span></h1>
+  <div class="tagline"><span class="strike">unwinnable</span>, but not really.</div>
+  <div class="puzzle-line">
+    <span>&#128197;</span>
+    <span id="dev-unlock">Daily Puzzle #<span id="puzzle-number">0</span></span>
+    <button class="help-pill" id="help-pill" aria-label="How to play">?</button>
+  </div>
+
+  <!-- mode toggle -->
+  <div class="mode-row">
+    <span class="mode-label">Mode <span id="mode-lock">&#128274; locked</span></span>
+    <div class="toggle" id="toggle-wrap">
+      <button id="mode-possible">Possible</button>
+      <button id="mode-unimpossible">&#128293; Unimpossible</button>
+    </div>
+  </div>
+
+  <!-- what you're trying to do — sits above the board -->
+  <div class="goal-line">Find 2 across words and 2 down words</div>
+
+  <!-- board + panel share a column so the panel matches the board's width -->
+  <div class="stack">
+
+    <!-- board: top lane / [left | grid | right] / bottom lane -->
+    <div class="board">
+      <div class="lane-h" id="lane-top"></div>
+      <div class="mid-row">
+        <div class="lane-v" id="lane-left"></div>
+        <div class="grid" id="grid"></div>
+        <div class="lane-v" id="lane-right"></div>
+      </div>
+      <div class="lane-h" id="lane-bottom"></div>
+    </div>
+
+    <!-- inline instruction: teaches the tap mechanic in place -->
+    <div class="how-line">Tap a letter, then tap a lit square</div>
+
+    <!-- score panel -->
+    <div class="panel">
+      <div class="moves-line">Moves Remaining: <span class="c" id="score-value">100</span></div>
+      <div id="middle-slot"></div>
+      <button class="btn-panel-share rise" id="panel-share">&#128228; Share</button>
+    </div>
+
+  </div>
+
+  <!-- daily note — sits above the pills so it reads as information, not boilerplate -->
+  <div class="daily-note">New puzzle every day at midnight</div>
+
+  <!-- footer -->
+  <div class="footer">
+    <button class="pill share rise" id="foot-share"><span class="badge">&#128228;</span>Share</button>
+    <button class="pill stats rise" id="foot-stats"><span class="badge">&#128202;</span>Stats</button>
+    <button class="pill about rise" id="foot-about"><span class="badge">&#8505;</span>About</button>
+    <button class="pill help rise" id="foot-help"><span class="badge">?</span>Help</button>
+  </div>
+
+  <!-- page footer / copyright -->
+  <footer class="page-footer">
+    <div class="footer-mark">Unimpossible&trade; &mdash; Which Way To Words?&trade;</div>
+    <div class="footer-copy">&copy; 2025 Joel Pickard. All rights reserved.</div>
+  </footer>
+
+  <!-- dev panel — hidden until unlocked by 3 quick taps on "Daily Puzzle" -->
+  <button class="dev-toggle" id="dev-toggle" hidden>&#128295; Dev Panel</button>
+  <div class="dev-panel" id="dev-panel">
+    <button id="dev-new">New Test Puzzle</button>
+    <button id="dev-answers">Show Answers</button>
+    <button id="dev-test">Test 20 (win + trap-free)</button>
+    <div id="dev-answers-out"></div>
+    <div id="dev-result"></div>
+  </div>
+
+  <!-- modal containers -->
+  <div class="overlay" id="modal-overlay"></div>
+  <div class="endgame" id="endgame"></div>
+
+  <script src="game/game.js"></script>
+  <script src="game/dev.js"></script>
+
+  <!-- register the service worker (enables offline play + installability) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').catch(function () { /* non-fatal */ });
+      });
+    }
+  </script>
+
+  <!-- Cloudflare Web Analytics (privacy-friendly, no cookies, no consent banner).
+       REPLACE the token below with your real one from the Cloudflare dashboard:
+       Analytics & Logs > Web Analytics > Add a site > copy the "token" value.
+       Until the real token is in, this line does nothing (safe to deploy). -->
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token": "REPLACE_WITH_YOUR_CLOUDFLARE_TOKEN"}'></script>
+</body>
+</html>

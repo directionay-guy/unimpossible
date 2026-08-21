@@ -1,0 +1,579 @@
+/* ============================================================================
+   UNIMPOSSIBLE — styles
+   Brand: dark aubergine chrome, light bone play surface, ivory tiles.
+   Fonts: Bricolage Grotesque (wordmark + letter tiles), Space Mono (UI text).
+   ============================================================================ */
+
+:root {
+  --ink: #16141F;
+  --ink-soft: #211E2C;
+  --bone: #ECE7DA;
+  --bone-dim: #C9C3B4;
+  --coral: #FF5A3C;
+  --lav: #9D99B5;
+  --board: #E9E3D4;
+  --well: #DAD2BF;
+  --ivory: #FBF7EC;
+  --green: #2F8049;
+  --green-text: #7FD79A;
+  --green-dim: #256B3B;
+  --purple: #6A47D4;
+  --crt-green: #1A5C42;
+  --crt-amber: #FFC44D;
+  --font-mark: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+body {
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--font-mono);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 16px 48px;
+}
+
+/* ---- JTPgaming house style: hover rise on every button ------------------- */
+.rise { transition: transform 0.15s ease, background 0.15s ease; }
+.rise:hover:not(:disabled) { transform: translateY(-2px); }
+.rise:active:not(:disabled) { transform: translateY(0); }
+button { font-family: var(--font-mono); cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+
+/* ---- header ------------------------------------------------------------- */
+.wordmark {
+  font-family: var(--font-mark);
+  font-weight: 800;
+  font-size: 2.6rem;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.wordmark .c { color: var(--coral); }
+.wordmark .bone { color: var(--bone); }
+
+.tagline {
+  font-size: 0.85rem;
+  color: var(--bone-dim);
+  margin-bottom: 12px;
+}
+/* The strike is drawn manually (not text-decoration) so its thickness and
+   height can be controlled. Thickness is in em so it SCALES with the text —
+   a fixed px line becomes overwhelming at small sizes and swallows the word. */
+.strike {
+  color: var(--bone-dim);
+  background-image: linear-gradient(var(--coral), var(--coral));
+  background-size: 100% 0.12em;
+  background-position: 0 62%;
+  background-repeat: no-repeat;
+}
+
+.puzzle-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  color: var(--lav);
+  margin-bottom: 16px;
+}
+.help-pill {
+  background: var(--purple);
+  color: #FFB347;
+  border: none;
+  border-radius: 999px;
+  width: 30px;
+  height: 20px;
+  font-family: var(--font-mark);
+  font-weight: 800;
+  font-size: 0.8rem;
+  line-height: 1;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease;
+}
+.help-pill:hover { transform: scale(1.12); }
+.help-pill:active { transform: scale(1.05); }
+
+/* ---- mode toggle -------------------------------------------------------- */
+.mode-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.mode-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--lav);
+}
+#mode-lock { text-transform: none; color: var(--bone-dim); }
+.toggle {
+  display: inline-flex;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(157,153,181,0.33);
+}
+.toggle.locked { opacity: 0.6; }
+.toggle button {
+  padding: 6px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: transparent;
+  color: var(--lav);
+  border: none;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+#mode-possible.active { background: var(--green); color: var(--bone); }
+#mode-unimpossible.active { background: var(--coral); color: var(--bone); }
+
+/* ---- board -------------------------------------------------------------- */
+.board {
+  background: var(--board);
+  padding: 20px;
+  border-radius: 22px;
+  box-shadow: 0 20px 50px -24px #000, inset 0 1px 0 rgba(255,255,255,0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.lane-row { display: flex; gap: 4px; }
+.mid-row { display: flex; align-items: flex-start; gap: 8px; }
+
+/* lanes */
+.lane-h { display: flex; gap: 4px; }
+.lane-v { display: flex; flex-direction: column; gap: 4px; padding-top: 9px; }
+.slot, .cell, .grid-tile, .lane-letter, .ghost, .cell.empty {
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.95rem;
+}
+.slot { font-family: var(--font-mark); }
+.lane-letter { width: 100%; height: 100%; }
+
+/* grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(6, 34px);
+  grid-template-rows: repeat(6, 34px);
+  gap: 4px;
+  padding: 8px;
+  background: var(--well);
+  border: 1px solid rgba(22,20,31,0.13);
+  border-radius: 8px;
+  box-shadow: inset 0 2px 6px rgba(22,20,31,0.12);
+}
+.cell { position: relative; border-radius: 4px; }
+.cell.empty { border: 1px solid rgba(22,20,31,0.12); background: rgba(22,20,31,0.04); }
+.grid-tile {
+  width: 100%; height: 100%;
+  border-radius: 4px;
+  cursor: grab;
+}
+.grid-tile:active { cursor: grabbing; }
+.ghost {
+  width: 100%; height: 100%;
+  font-family: var(--font-mark);   /* match the real tiles, not the default font */
+  color: rgba(22,20,31,0.28);
+  border: 1px solid rgba(22,20,31,0.10);
+  border-radius: 4px;
+}
+/* countdown tiles: old-computer-terminal theme (matches the Directionary
+   countdown) — deep green face, amber letters, so the finished board is
+   unmistakably a different state from an active game */
+.countdown-tile {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--crt-green);
+  color: var(--crt-amber);
+  font-family: var(--font-mark);
+  font-weight: 800;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(22,20,31,0.28);
+  text-shadow: 0 0 6px rgba(255,176,0,0.45);
+}
+
+.grid-pulse { animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+/* valid tap destinations: gentle breathing so they read as "alive and waiting" */
+.target-pulse { animation: target-breathe 1.2s ease-in-out infinite; }
+@keyframes target-breathe { 0%,100% { opacity: 1; } 50% { opacity: 0.72; } }
+.slot { transition: transform 0.12s ease, background 0.12s ease; }
+
+/* ---- score panel -------------------------------------------------------- */
+/* board + panel column: the board sets the width, the panel stretches to match */
+.stack {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* inline instruction between the board and the panel.
+   width:0 + min-width:100% is the trick that stops this long line from
+   *setting* the column width — it takes the board's width and wraps inside it,
+   instead of stretching the board and panel out to fit one long line. */
+.how-line {
+  width: 0;
+  min-width: 100%;
+  margin-top: 14px;
+  text-align: center;
+  font-size: 0.74rem;
+  color: var(--lav);
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+
+/* goal line: what you're trying to do, above the board. Sits in normal page
+   flow (outside .stack) so it centres on the page without stretching anything. */
+.goal-line {
+  max-width: 340px;
+  margin: 0 auto 12px;
+  text-align: center;
+  font-size: 0.74rem;
+  color: var(--lav);
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+
+.panel {
+  width: 100%;
+  background: var(--ink-soft);
+  border: 1px solid rgba(157,153,181,0.2);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+}
+.moves-line {
+  text-align: center;
+  font-family: var(--font-mark);
+  font-weight: 800;
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+  position: relative;   /* anchor for the +6 refund popup */
+}
+.moves-line .c { color: var(--coral); }
+/* "+6" celebration that floats up and fades when a word is completed */
+.refund-pop {
+  position: absolute;
+  left: 50%;
+  top: -4px;
+  transform: translateX(-50%);
+  color: var(--green-text);
+  font-family: var(--font-mark);
+  font-weight: 800;
+  font-size: 1.1rem;
+  pointer-events: none;
+  animation: refund-float 1.4s ease-out forwards;
+}
+@keyframes refund-float {
+  0%   { opacity: 0; transform: translate(-50%, 4px); }
+  15%  { opacity: 1; transform: translate(-50%, -2px); }
+  70%  { opacity: 1; transform: translate(-50%, -14px); }
+  100% { opacity: 0; transform: translate(-50%, -26px); }
+}
+#middle-slot {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+/* Button and note sit side by side on one line. The panel is now board-width
+   (334px desktop / 302px mobile inner) and the pair needs ~243px, so it fits
+   with ~20% to spare. Both are nowrap so the panel height can never change. */
+.hint-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+.btn-hint {
+  background: var(--green);
+  color: var(--bone);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+.btn-hint.is-disabled { background: rgba(157,153,181,0.2); color: var(--bone-dim); }
+.hint-note { font-size: 0.68rem; color: var(--green-text); white-space: nowrap; flex: 0 0 auto; }
+.hardest-banner {
+  width: 100%;
+  text-align: center;
+  color: var(--coral);
+  border: 1px solid rgba(255,90,60,0.4);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.btn-panel-share {
+  width: 100%;
+  background: var(--purple);
+  color: var(--bone);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+/* ---- footer ------------------------------------------------------------- */
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 32px;
+}
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--ink-soft);
+  border: 1px solid rgba(157,153,181,0.2);
+  border-radius: 999px;
+  padding: 6px 12px 6px 6px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--bone);
+}
+.pill .badge {
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 999px;
+  color: var(--bone);
+  font-size: 0.8rem;
+}
+.pill.share .badge { background: var(--purple); }
+.pill.stats .badge { background: var(--coral); }
+.pill.about .badge { background: var(--green); }
+.pill.help .badge { background: var(--lav); }
+
+/* daily note — above the pills, given weight so it reads as real information */
+.daily-note {
+  margin-top: 24px;
+  font-size: 0.82rem;
+  color: var(--bone-dim);
+  letter-spacing: 0.02em;
+}
+
+/* page footer / copyright */
+.page-footer {
+  margin-top: 28px;
+  text-align: center;
+  line-height: 1.6;
+}
+.footer-mark {
+  font-size: 0.75rem;
+  color: var(--bone-dim);
+}
+.footer-copy {
+  font-size: 0.7rem;
+  color: var(--lav);
+}
+
+/* ---- modals ------------------------------------------------------------- */
+.overlay, .endgame {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 50;
+}
+.modal {
+  position: relative;
+  background: var(--ink-soft);
+  border: 1px solid rgba(157,153,181,0.33);
+  border-radius: 14px;
+  padding: 24px;
+  max-width: 440px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  color: var(--bone);
+}
+.modal.win { border-color: var(--coral); text-align: center; max-width: 400px; }
+.modal.loss { border-color: rgba(157,153,181,0.4); text-align: center; max-width: 400px; }
+.modal p { font-size: 0.9rem; color: var(--bone-dim); margin-bottom: 12px; line-height: 1.5; }
+.modal p .g { color: var(--green); }
+.modal p .c { color: var(--coral); }
+.modal-title {
+  font-family: var(--font-mark);
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: var(--coral);
+  margin-bottom: 12px;
+}
+/* section headers inside the rules modal */
+.rules-h {
+  font-family: var(--font-mark);
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--bone);
+  margin: 18px 0 6px;
+  letter-spacing: 0.02em;
+}
+.modal-x {
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 32px; height: 32px;
+  border-radius: 999px;
+  background: var(--bone);
+  color: var(--ink);
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  line-height: 1;
+}
+.modal-x:hover { background: var(--bone-dim); }
+.modal-foot { margin-top: 20px; text-align: center; }
+.btn-gotit, .btn-share {
+  background: var(--coral);
+  color: var(--bone);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.btn-share { padding: 12px 24px; }
+.muted { color: var(--lav); font-size: 0.85rem; }
+.muted.small { font-size: 0.72rem; margin-top: 8px; }
+
+.wordmark-sm {
+  font-family: var(--font-mark);
+  font-weight: 800;
+  font-size: 1.6rem;
+  margin-bottom: 4px;
+}
+.wordmark-sm .c { color: var(--coral); }
+
+/* about contact + email image */
+.contact { margin: 16px 0 8px; }
+.contact-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lav);
+  margin-bottom: 8px;
+}
+.email-img { max-width: 100%; height: auto; border-radius: 6px; display: block; }
+
+/* stats */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.stat {
+  background: var(--ink);
+  border: 1px solid rgba(157,153,181,0.2);
+  border-radius: 8px;
+  padding: 12px 6px;
+  text-align: center;
+}
+.stat-num { font-family: var(--font-mark); font-weight: 800; font-size: 1.5rem; color: var(--bone); }
+.stat-lbl { font-size: 0.62rem; color: var(--lav); text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* share */
+.share-preview {
+  background: var(--ink);
+  border: 1px solid rgba(157,153,181,0.2);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--bone);
+  margin-bottom: 16px;
+}
+.share-actions { text-align: center; }
+.btn-copy {
+  background: var(--purple);
+  color: var(--bone);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.btn-copy.copied { background: var(--green); }
+
+/* win/loss internals */
+.big-emoji { font-size: 3.5rem; margin-bottom: 12px; }
+.win-title { font-family: var(--font-mark); font-weight: 800; font-size: 1.5rem; margin-bottom: 8px; }
+.win-title .c { color: var(--coral); }
+.final { margin: 8px 0; }
+.final .big { font-family: var(--font-mark); font-weight: 800; font-size: 1.6rem; }
+.answer {
+  background: var(--ink);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 16px 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* ---- dev panel ---------------------------------------------------------- */
+.dev-toggle[hidden] { display: none !important; }
+.dev-toggle {
+  margin-top: 16px;
+  background: var(--ink-soft);
+  color: var(--lav);
+  border: 1px solid rgba(157,153,181,0.27);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 0.72rem;
+}
+.dev-panel { margin-top: 8px; text-align: center; display: none; }
+.dev-panel.open { display: block; }
+.dev-panel button {
+  background: var(--ink-soft);
+  color: var(--bone);
+  border: 1px solid rgba(157,153,181,0.27);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 0.72rem;
+  margin: 2px;
+}
+#dev-result { font-size: 0.7rem; color: var(--green-text); margin-top: 8px; white-space: pre-line; }
+#dev-answers-out {
+  font-size: 0.78rem;
+  margin-top: 8px;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 420px) {
+  .slot, .cell, .grid-tile, .lane-letter, .ghost, .cell.empty { width: 30px; height: 30px; font-size: 0.85rem; }
+  .grid { grid-template-columns: repeat(6, 30px); grid-template-rows: repeat(6, 30px); }
+  .wordmark { font-size: 2.1rem; }
+  /* keep the tagline legible — the struck word gets illegible if this shrinks */
+  .tagline { font-size: 0.82rem; }
+  /* keep both toggle halves on a single line */
+  .toggle button { padding: 6px 10px; font-size: 0.78rem; }
+  .mode-label { font-size: 0.6rem; letter-spacing: 0.12em; }
+}

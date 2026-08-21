@@ -1,0 +1,26 @@
+{
+  "name": "Unimpossible",
+  "short_name": "Unimpossible",
+  "description": "Probably the hardest word puzzle in the whole wide world. A daily word puzzle by JTPgaming.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#16141F",
+  "theme_color": "#16141F",
+  "categories": ["games", "puzzle"],
+  "icons": [
+    {
+      "src": "images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
