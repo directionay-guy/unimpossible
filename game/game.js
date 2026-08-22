@@ -1,6 +1,6 @@
 /* ============================================================================
    UNIMPOSSIBLE — vanilla JS engine
-   A daily word puzzle by Joel Pickard (JTPgaming).
+   A daily word game from the creator of Directionary.
 
    Ported faithfully from the React reference. No frameworks, no build step.
    Sections:
@@ -990,10 +990,12 @@
       <p>A daily word puzzle for people who like it hard. Four words hide around the edges of one shared grid, tangled together and buried in decoys. Move the correct letters into their lanes and solve all four.</p>
       <p>The name is a wink: <em>un-im-possible</em> — two negatives that cancel out. It looks unwinnable. It isn't. <strong>Probably the hardest word puzzle in the whole wide world.</strong></p>
       <p class="muted">Which Way To Words?&trade; &nbsp;<strong>#WW2W</strong></p>
+      <p class="muted small">From the creator of <a href="https://directionary.net" target="_blank" rel="noopener">Directionary</a> and <a href="https://directionary.net/proTAB" target="_blank" rel="noopener">Directionary&nbsp;Pro</a>.</p>
       <div class="contact">
         <div class="contact-label">Contact &amp; bug reports</div>
         <img src="images/email-designasaur.png" alt="contact email" class="email-img">
       </div>
+      <p class="muted small">Unimpossible is available for licensing or purchase.</p>
       <p class="muted small">&copy; 2025 Joel Pickard. All rights reserved.</p>`;
   }
 
