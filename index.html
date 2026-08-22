@@ -114,11 +114,14 @@
     }
   </script>
 
-  <!-- Cloudflare Web Analytics (privacy-friendly, no cookies, no consent banner).
-       REPLACE the token below with your real one from the Cloudflare dashboard:
-       Analytics & Logs > Web Analytics > Add a site > copy the "token" value.
-       Until the real token is in, this line does nothing (safe to deploy). -->
-  <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
-          data-cf-beacon='{"token": "REPLACE_WITH_YOUR_CLOUDFLARE_TOKEN"}'></script>
+  <!-- Google Analytics 4 (property: Unimpossible). Separate GA4 property from
+       Directionary, so both show under one account without commingling data. -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T3J0FS7D3Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-T3J0FS7D3Q');
+  </script>
 </body>
 </html>
