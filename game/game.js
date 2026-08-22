@@ -885,20 +885,22 @@
 
   function giveHint() {
     if (!S.assistMode || S.hintsUsed >= MAX_HINTS) return;
-    // For each of the four target words, resolve the lane the player is actually
-    // building it in, then gather candidate tiles for the still-empty slots of
-    // THAT lane. Picking a lane first (evenly) keeps hint distribution fair.
+    // Gather every correct letter that can still be validly placed: for each of
+    // the four words, find its lane and collect grid tiles that fill a STILL-EMPTY
+    // slot of that lane. A lane clogged with wrong guesses simply yields no
+    // candidates and is skipped automatically — so the hint always lands on a
+    // word that can actually be helped, rather than silently failing on a blocked
+    // one. (There is no pre-built hint queue; each press picks live from the board.)
     const words = { top: S.words.topWord, bottom: S.words.bottomWord,
                     left: S.words.leftWord, right: S.words.rightWord };
     const byLane = {};
     for (const which of ['top', 'bottom', 'left', 'right']) {
       const { lane, isCol } = laneForWord(which);
-      // if two words resolved to the same lane (shouldn't, but guard), skip dupes
-      if (byLane[lane]) continue;
+      if (byLane[lane]) continue;                 // dedupe if two resolve to same lane
       const letters = words[which].split('');
       const pool = [];
       for (let i = 0; i < 6; i++) {
-        if (S.lanes[lane][i]) continue;             // slot already filled
+        if (S.lanes[lane][i]) continue;           // slot already filled (right OR wrong) -> skip
         const target = letters[i];
         for (let k = 0; k < 6; k++) {
           const r = isCol ? k : i, c = isCol ? i : k;
@@ -909,7 +911,12 @@
     }
 
     const lanesWithOptions = Object.keys(byLane);
-    if (!lanesWithOptions.length) return;
+    if (!lanesWithOptions.length) {
+      // Every correct word's lane is blocked by wrong guesses — no valid hint
+      // exists right now. Don't charge the move; tell the player what to do.
+      showHintBlockedMessage();
+      return;
+    }
     const lane = lanesWithOptions[Math.floor(Math.random() * lanesWithOptions.length)];
     const pool = byLane[lane];
 
@@ -920,6 +927,17 @@
     if (S.score <= 0 && !S.hasWon) triggerLoss();
     render();
     saveGame();
+  }
+
+  // Shown when a hint can't help because wrong letters are filling the lanes.
+  // Uses the hint note line under the button so it's seen right where you tapped.
+  function showHintBlockedMessage() {
+    const note = document.querySelector('.hint-note');
+    if (!note) return;
+    note.textContent = 'Clear a wrong word first — no hint fits right now.';
+    note.style.color = 'var(--coral)';
+    // restore the normal "(N left)" note by re-rendering after a moment
+    setTimeout(() => { render(); }, 3200);
   }
 
   /* ---- 10. modals --------------------------------------------------------- */
