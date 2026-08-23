@@ -614,7 +614,8 @@
             <span class="bulb">&#128161;</span> Hint
           </button>
           <span class="hint-note">(${MAX_HINTS - S.hintsUsed} left) uses 1 move each</span>
-        </div>`;
+        </div>
+        <div id="hint-msg" class="hint-msg" style="display:none;"></div>`;
       if (!disabled) el('hint-btn').addEventListener('click', giveHint);
     } else {
       mid.innerHTML = `<div class="hardest-banner">&#128293; Unimpossible — no hints</div>`;
@@ -932,12 +933,11 @@
   // Shown when a hint can't help because wrong letters are filling the lanes.
   // Uses the hint note line under the button so it's seen right where you tapped.
   function showHintBlockedMessage() {
-    const note = document.querySelector('.hint-note');
-    if (!note) return;
-    note.textContent = 'Clear a wrong word first — no hint fits right now.';
-    note.style.color = 'var(--coral)';
-    // restore the normal "(N left)" note by re-rendering after a moment
-    setTimeout(() => { render(); }, 3200);
+    const msg = document.getElementById('hint-msg');
+    if (!msg) return;
+    msg.textContent = 'Clear a wrong word first — no hint fits right now.';
+    msg.style.display = 'block';
+    setTimeout(() => { if (msg) { msg.style.display = 'none'; msg.textContent = ''; } }, 3600);
   }
 
   /* ---- 10. modals --------------------------------------------------------- */
