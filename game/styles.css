@@ -313,6 +313,16 @@ button:disabled { cursor: not-allowed; }
 }
 .btn-hint.is-disabled { background: rgba(157,153,181,0.2); color: var(--bone-dim); }
 .hint-note { font-size: 0.68rem; color: var(--green-text); white-space: nowrap; flex: 0 0 auto; }
+.hint-msg {
+  width: 100%;
+  text-align: center;
+  color: var(--coral);
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-top: 8px;
+  white-space: normal;
+}
 .hardest-banner {
   width: 100%;
   text-align: center;
