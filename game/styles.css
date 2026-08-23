@@ -287,7 +287,9 @@ button:disabled { cursor: not-allowed; }
 #middle-slot {
   min-height: 44px;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   margin-bottom: 8px;
 }
 /* Button and note sit side by side on one line. The panel is now board-width
