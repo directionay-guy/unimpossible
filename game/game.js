@@ -742,6 +742,28 @@
     if (S.assistMode) refundCorrectWords('each');   // live +6 per word in Possible
     checkWin();
     render();
+    // Possible mode only: if this placement just COMPLETED the lane and the six
+    // letters aren't a valid answer for that orientation, shake the lane side to
+    // side — the human "no". Fires after render() so it lands on the fresh DOM.
+    if (S.assistMode && !S.hasWon) maybeShakeWrongWord(lane);
+  }
+
+  // A horizontal lane is correct if its word is EITHER across-word; a vertical
+  // lane if EITHER down-word (there is no "wrong lane" — the swap is allowed).
+  function maybeShakeWrongWord(lane) {
+    if (S.lanes[lane].some((c) => !c)) return;         // not full yet — no verdict
+    const word = S.lanes[lane].join('');
+    const isHoriz = (lane === 'top' || lane === 'bottom');
+    const valid = isHoriz
+      ? [S.words.topWord, S.words.bottomWord]
+      : [S.words.leftWord, S.words.rightWord];
+    if (valid.includes(word)) return;                  // it's a correct answer — no shake
+    const container = el('lane-' + lane);
+    if (!container) return;
+    container.classList.remove('shake-no');            // restart if mid-animation
+    void container.offsetWidth;                        // reflow so re-adding replays it
+    container.classList.add('shake-no');
+    setTimeout(() => container.classList.remove('shake-no'), 400);
   }
 
   function returnToGrid(row, col) {
