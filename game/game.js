@@ -390,7 +390,12 @@
   function laneSlotStyle(laneKey, filled, confirmed, isAnchor, isVerified, isTgt, isSel) {
     const c = LANE[laneKey];
     // Permanent states speak in BORDERS; transient states speak in FILL/motion.
-    const deep = confirmed || isAnchor || isVerified;
+    // BOLD (deep border) means exactly one thing: this WORD is correct (Possible
+    // mode). The free letter and hinted letters are NOT bolded — otherwise players
+    // generalise "correct letters look bold" and get confused when their own
+    // correct placements don't. Those letters are instead known by being locked
+    // (immovable = free/hint).
+    const deep = confirmed;
     let bg = filled ? 'var(--ivory)' : c.soft;
     let extra = '';
     if (isTgt) {
@@ -1009,9 +1014,12 @@
       <p class="muted">In Possible mode the refund lands the moment a word is correct. In Unimpossible it all comes back at the win — the mode never tells you a word is right until you've won.</p>
 
       <div class="rules-h">The two modes</div>
-      <p><strong class="g">Possible</strong> — one correct letter starts locked in as a foothold, you get 5 hints, and each word lights up once it's complete and correct.</p>
-      <p><strong class="c">&#128293; Unimpossible</strong> — no free letter, no hints, no confirmation. Nothing lights up; you only find out you're right when you win. Pure deduction, and the default.</p>
+      <p><strong class="g">Possible</strong> — one correct letter starts locked in as a foothold, you get 5 hints, and a completed word gets a bold outline once it's correct.</p>
+      <p><strong class="c">&#128293; Unimpossible</strong> — no free letter, no hints, no confirmation. Nothing is marked; you only find out you're right when you win. Pure deduction, and the default.</p>
       <p class="muted">Pick your mode before your first move — it locks once you start.</p>
+
+      <div class="rules-h">Right and wrong</div>
+      <p>In <strong class="g">Possible</strong> mode, a completed <em>correct</em> word gets a bold outline. Complete a word that isn't today's answer and its edge gives a quick side-to-side shake — a little &ldquo;no.&rdquo; <strong class="c">Unimpossible</strong> stays silent either way.</p>
 
       <div class="rules-h">Hints &amp; the free letter</div>
       <p>The <strong>free letter</strong> (Possible only) is one correct letter already placed for you — a way in, and it costs nothing. A <strong>hint</strong> reveals one correct letter and lights up its square; it's picked at random from anywhere on the board, so it won't always help the word you're stuck on. Each hint costs one move.</p>
