@@ -152,6 +152,17 @@ button:disabled { cursor: not-allowed; }
 /* lanes */
 .lane-h { display: flex; gap: 4px; }
 .lane-v { display: flex; flex-direction: column; gap: 4px; padding-top: 9px; }
+/* "no" head-shake for a completed-but-wrong word (Possible mode). Side to side
+   = human "no". Starts from centre (half swing) then full ±4px swings, home. */
+.shake-no { animation: shake-no 350ms ease-in-out; }
+@keyframes shake-no {
+  0%   { transform: translateX(0); }
+  20%  { transform: translateX(-4px); }
+  40%  { transform: translateX(4px); }
+  60%  { transform: translateX(-4px); }
+  80%  { transform: translateX(4px); }
+  100% { transform: translateX(0); }
+}
 .slot, .cell, .grid-tile, .lane-letter, .ghost, .cell.empty {
   width: 34px; height: 34px;
   display: flex; align-items: center; justify-content: center;
