@@ -258,10 +258,9 @@ button:disabled { cursor: not-allowed; }
   letter-spacing: 0.02em;
   line-height: 1.5;
 }
-/* the two goal lines are a pair: first line tight to the second, second slightly
-   quieter and carrying the bottom margin */
+/* the two goal lines are an equal pair — same size and weight, just sitting
+   tight together as one two-line instruction */
 .goal-main { margin-bottom: 2px; }
-.goal-sub { font-size: 0.68rem; opacity: 0.82; }
 
 .panel {
   width: 100%;
