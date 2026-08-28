@@ -258,6 +258,10 @@ button:disabled { cursor: not-allowed; }
   letter-spacing: 0.02em;
   line-height: 1.5;
 }
+/* the two goal lines are a pair: first line tight to the second, second slightly
+   quieter and carrying the bottom margin */
+.goal-main { margin-bottom: 2px; }
+.goal-sub { font-size: 0.68rem; opacity: 0.82; }
 
 .panel {
   width: 100%;
