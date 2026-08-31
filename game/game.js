@@ -1223,7 +1223,7 @@
   function saveMode(assist) { try { localStorage.setItem(LS.mode, assist ? 'possible' : 'unimpossible'); } catch (e) {} }
   function loadMode() {
     try { const v = localStorage.getItem(LS.mode); if (v === 'possible') return true; if (v === 'unimpossible') return false; } catch (e) {}
-    return false; // first-run default: Unimpossible
+    return true; // first-run default: Possible (gentler on-ramp; newcomers get feedback)
   }
   function loadStats() {
     try { const s = JSON.parse(localStorage.getItem(LS.stats)); if (s) return s; } catch (e) {}
@@ -1311,7 +1311,7 @@
       el('grid').innerHTML = '<div style="color:var(--bone);padding:20px">Could not load word list.</div>';
       return;
     }
-    S.assistMode = loadMode();       // returning player's saved mode, else Unimpossible
+    S.assistMode = loadMode();       // returning player's saved mode; first-timers get Possible
     wireStaticButtons();
     loadDailyPuzzle();
     startRolloverWatch();
