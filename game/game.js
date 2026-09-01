@@ -1018,6 +1018,11 @@
       <div class="rules-h">The goal</div>
       <p>Four six-letter words are hidden in the grid — two read <strong>across</strong>, two read <strong>down</strong>. Their letters are scattered among the squares and mixed with decoys that belong to no word. Move the right letters out to the edges to spell all four, and you win.</p>
 
+      <div class="rules-h">The two modes</div>
+      <p><strong class="g">Possible</strong> — one correct letter starts locked in as a foothold, you get 5 hints, and a completed word gets a bold outline once it's correct. This is where you start.</p>
+      <p><strong class="c">&#128293; Unimpossible</strong> — no free letter, no hints, no confirmation. Nothing is marked; you only find out you're right when you win. Pure deduction. Switch to it when you're ready for the real challenge.</p>
+      <p class="muted">You can switch modes before your first move — after that, it's locked for the day.</p>
+
       <div class="rules-h">Placing a letter</div>
       <p>Tap a letter in the grid to pick it up — the squares it can legally move to light up. Tap a lit square to drop it there. Letters travel only along their own row or column, never diagonally.</p>
 
@@ -1030,11 +1035,6 @@
       <div class="rules-h">Score</div>
       <p>You start with <strong>100</strong>. Placing a letter, taking one back, or using a hint each costs a move. But every word you get right <strong>refunds the 6 moves it cost</strong> — so a flawless game scores a perfect <strong>100</strong>. Your remaining moves are your score; don't hit zero.</p>
       <p class="muted">In Possible mode the refund lands the moment a word is correct. In Unimpossible it all comes back at the win — the mode never tells you a word is right until you've won.</p>
-
-      <div class="rules-h">The two modes</div>
-      <p><strong class="g">Possible</strong> — one correct letter starts locked in as a foothold, you get 5 hints, and a completed word gets a bold outline once it's correct. This is where you start.</p>
-      <p><strong class="c">&#128293; Unimpossible</strong> — no free letter, no hints, no confirmation. Nothing is marked; you only find out you're right when you win. Pure deduction. Switch to it when you're ready for the real challenge.</p>
-      <p class="muted">You can switch modes before your first move — after that, it's locked for the day.</p>
 
       <div class="rules-h">Right and wrong</div>
       <p>In <strong class="g">Possible</strong> mode, a completed <em>correct</em> word gets a bold outline. Complete a word that isn't today's answer and its edge gives a quick side-to-side shake — a little &ldquo;no.&rdquo; <strong class="c">Unimpossible</strong> stays silent either way.</p>
