@@ -262,7 +262,20 @@
     verified: new Set(),      // lane keys the game itself confirmed (anchor, hinted placements)
     hintedCells: new Set(),   // grid cells a hint has revealed, as "row-col"
     refunded: new Set(),      // words already credited their +6 (by word string)
+    startedTracked: false,    // analytics: puzzle_started event fired once this game
   };
+
+  // ---- analytics (GA4) -------------------------------------------------------
+  // Fire a named event with optional params. Wrapped so a missing/blocked gtag
+  // (ad-blockers, etc.) can NEVER interfere with gameplay. Every event carries
+  // the current mode so results can be split Possible vs Unimpossible.
+  function track(event, params) {
+    try {
+      if (typeof gtag !== 'function') return;
+      const mode = S.assistMode ? 'possible' : 'unimpossible';
+      gtag('event', event, Object.assign({ mode: mode }, params || {}));
+    } catch (e) { /* analytics must never break the game */ }
+  }
 
   const gameStarted = () => S.moveCount > 0 || S.hintsUsed > 0;
 
@@ -294,6 +307,7 @@
       S.hasWon = false; S.hasLost = false;
       S.score = START_MOVES; S.moveCount = 0; S.hintsUsed = 0;
       S.refunded = new Set();
+      S.startedTracked = false;   // analytics: allow puzzle_started to fire on the new puzzle
       previewCountdown = false;   // never leave a fresh board showing the clock
       stopCountdown();
     }
@@ -734,6 +748,8 @@
 
   function placeIntoLane(lane, idx) {
     const sel = S.selected;
+    // Analytics: first letter placed = the player actually engaged (fires once).
+    if (!S.startedTracked) { S.startedTracked = true; track('puzzle_started'); }
     S.lanes[lane][idx] = sel.letter;
     S.grid[sel.row][sel.col] = '';
     const key = `${lane}-${idx}`;
@@ -852,6 +868,7 @@
       recordStat(true);
       startCountdown();
       saveGame();          // persist the WIN — registerMove saved before this ran,
+      track('puzzle_won', { score: S.score });   // score reflects the final refunded total
       showWinModal();      // so without this a reload restores the pre-win board
     }
   }
@@ -861,6 +878,7 @@
     recordStat(false);
     startCountdown();
     saveGame();            // persist the loss for the same reason
+    track('puzzle_lost');
     showLossModal();
   }
 
@@ -1014,9 +1032,9 @@
       <p class="muted">In Possible mode the refund lands the moment a word is correct. In Unimpossible it all comes back at the win — the mode never tells you a word is right until you've won.</p>
 
       <div class="rules-h">The two modes</div>
-      <p><strong class="g">Possible</strong> — one correct letter starts locked in as a foothold, you get 5 hints, and a completed word gets a bold outline once it's correct.</p>
-      <p><strong class="c">&#128293; Unimpossible</strong> — no free letter, no hints, no confirmation. Nothing is marked; you only find out you're right when you win. Pure deduction, and the default.</p>
-      <p class="muted">Pick your mode before your first move — it locks once you start.</p>
+      <p><strong class="g">Possible</strong> — one correct letter starts locked in as a foothold, you get 5 hints, and a completed word gets a bold outline once it's correct. This is where you start.</p>
+      <p><strong class="c">&#128293; Unimpossible</strong> — no free letter, no hints, no confirmation. Nothing is marked; you only find out you're right when you win. Pure deduction. Switch to it when you're ready for the real challenge.</p>
+      <p class="muted">You can switch modes before your first move — after that, it's locked for the day.</p>
 
       <div class="rules-h">Right and wrong</div>
       <p>In <strong class="g">Possible</strong> mode, a completed <em>correct</em> word gets a bold outline. Complete a word that isn't today's answer and its edge gives a quick side-to-side shake — a little &ldquo;no.&rdquo; <strong class="c">Unimpossible</strong> stays silent either way.</p>
@@ -1094,6 +1112,11 @@
 
   function copyShare() {
     const text = buildShareText();
+    // Analytics: an actual copy = real intent to share (not just opening the
+    // auto-shown modal). Tag with result so we can see who shares — winners,
+    // losers, or mid-game. Fires per copy (someone may share more than once).
+    const result = S.hasWon ? 'won' : S.hasLost ? 'lost' : 'in_progress';
+    track('result_shared', { result: result });
     const btn = el('copy-btn');
     if (btn) { btn.textContent = '\u2713 Copied!'; btn.classList.add('copied'); setTimeout(() => { btn.innerHTML = '\uD83D\uDCCB Copy result'; btn.classList.remove('copied'); }, 2000); }
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -1211,6 +1234,7 @@
       S.hasWon = g.hasWon;
       S.hasLost = g.hasLost;
       S.assistMode = g.assistMode;
+      S.startedTracked = (g.moveCount > 0) || g.hasWon || g.hasLost;  // don't re-fire puzzle_started on restore
       S.selected = null;
       S.highlight = null;
       render();
