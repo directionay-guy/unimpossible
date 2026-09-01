@@ -1042,6 +1042,7 @@
       <div class="rules-h">Hints &amp; the free letter</div>
       <p>The <strong>free letter</strong> (Possible only) is one correct letter already placed for you — a way in, and it costs nothing. A <strong>hint</strong> reveals one correct letter and lights up its square; it's picked at random from anywhere on the board, so it won't always help the word you're stuck on. Each hint costs one move.</p>
       <p class="muted">The free letter and any hinted letters are locked in place — since they're guaranteed correct, you can't pick them back up.</p>
+      <p class="muted">Because the free letter and hints appear in specific lanes, they settle which word belongs on which edge — and a hint can reveal that a word you've been building actually belongs on the opposite edge, so you may have to move your letters over.</p>
 
       <div class="rules-h">The words</div>
       <p>Everyday words — plurals and past tense are fair game, along with some slang and the occasional one you'll want to look up. No proper nouns, no swears.</p>
